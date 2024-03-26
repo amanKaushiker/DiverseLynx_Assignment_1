@@ -1,5 +1,5 @@
 {
-  "name": "diverselynx_assignment_1",
+  "name": "assignment1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "kafkajs": "^2.2.4",
+    "mongoose": "^8.2.3",
+    "node-rdkafka": "^2.18.0",
     "ws": "^8.16.0"
   }
 }
