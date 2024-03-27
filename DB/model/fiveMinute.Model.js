@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MinuteDataSchema = new mongoose.Schema(
+const FiveMinuteDataSchema = new mongoose.Schema(
   {
     timeStampKey: Number,
     open: Number,
@@ -15,6 +15,6 @@ const MinuteDataSchema = new mongoose.Schema(
 );
 
 // Create a model for minute data
-const MinuteData = mongoose.model("MinuteData", MinuteDataSchema);
+const FiveMinuteData = mongoose.model("FiveMinuteData", FiveMinuteDataSchema);
 
-module.exports = { MinuteData };
+module.exports = { FiveMinuteData };

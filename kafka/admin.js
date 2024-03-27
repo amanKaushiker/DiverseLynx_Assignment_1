@@ -6,13 +6,13 @@ const kafka = new Kafka({
 
 const admin = kafka.admin();
 
-(async function() {
+(async function () {
   try {
     await admin.connect();
     await admin.createTopics({
       topics: [
         {
-          topic: "binance-kafka-topic-1",
+          topic: "binance-kafka-topic-2",
           numPartitions: 1,
           replicationFactor: 1,
         },
