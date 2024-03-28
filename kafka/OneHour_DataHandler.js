@@ -1,4 +1,4 @@
-const { FiveMinuteData } = require("../DB/model/fiveMinute.Model");
+const { FifteenMinuteData } = require("./../DB/model/fifteenMinute.Model");
 const { timeExtractor } = require("./../helper_functions/timeExtractor");
 
 const currentSlotData = {
@@ -9,28 +9,28 @@ const currentSlotData = {
   timestamp: null,
 };
 
-let initialmin;
-let currentmin;
+let initialhour;
+let currenthour;
 
-exports.fiveMinDataHandler = async (val) => {
+exports.fifteenMinDataHandler = async (val) => {
   const rawData = JSON.parse(val);
   const hourMinFormat = timeExtractor(rawData.data.T);
-  currentmin = hourMinFormat.minutes;
+  currenthour = hourMinFormat.hours;
 
-  if (initialmin == undefined) {
+  if (initialhour == undefined) {
     console.log(rawData.data.T);
-    initialmin = currentmin;
+    initialhour = currenthour;
     currentSlotData.open = Number(rawData.data.p);
     currentSlotData.close = Number(rawData.data.p);
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
     currentSlotData.timestamp = rawData.data.T;
-  } else if (initialmin != currentmin && currentmin % 5 == 0) {
-    initialmin = currentmin;
+  } else if (initialhour != currenthour && currenthour % 60 == 0) {
+    initialhour = currenthour;
     ///============= save in Database =============//
     console.log("currentSlotdata : ", currentSlotData);
 
-    await FiveMinuteData.create({
+    await FifteenMinuteData.create({
       _id: currentSlotData.timestamp,
       open: currentSlotData.open,
       high: currentSlotData.high,

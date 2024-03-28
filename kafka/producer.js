@@ -12,8 +12,8 @@ let producer;
   try {
     producer = new Kafka.Producer({
       "metadata.broker.list": "3.133.74.32:9092", // Kafka broker address
+      "queue.buffering.max.messages": 1000000,
     });
-
     producer.connect();
 
     producer.on("ready", () => {

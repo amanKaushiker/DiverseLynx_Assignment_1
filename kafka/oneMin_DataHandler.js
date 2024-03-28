@@ -1,4 +1,5 @@
 const { MinuteData } = require("../DB/model/eachMinute.Model");
+const { timeExtractor } = require("./../helper_functions/timeExtractor");
 
 let minSlot;
 const currentSlotData = {
@@ -8,15 +9,6 @@ const currentSlotData = {
   high: null,
   timestamp: null,
 };
-
-function timeExtractor(unixTimeStamp) {
-  const date = new Date(unixTimeStamp);
-  return {
-    hours: date.getHours(),
-    minutes: date.getMinutes(),
-    seconds: date.getSeconds(),
-  };
-}
 
 exports.eachMinDataSaver = (val) => {
   const rawData = JSON.parse(val);
@@ -32,24 +24,23 @@ exports.eachMinDataSaver = (val) => {
     currentSlotData.timestamp = Number(rawData.data.T);
   } else if (minSlot === currentSlot) {
     //console.log("//=== SameValue ======//");
-    if (Number(rawData.data.p) < currentSlotData.low) {
+    if (Number(rawData.data.p) < currentSlotData.low)
       currentSlotData.low = Number(rawData.data.p);
-    }
-    if (Number(rawData.data.p) > currentSlotData.high) {
+
+    if (Number(rawData.data.p) > currentSlotData.high)
       currentSlotData.high = Number(rawData.data.p);
-    }
+
     currentSlotData.close = Number(rawData.data.p);
   } else if (minSlot != currentSlot) {
     console.log("//========= New Minute arrived =========//");
 
     //=== old min data need to be saved in database ===//
     const data = new MinuteData({
-      timeStampKey: currentSlotData.timestamp,
+      _id: currentSlotData.timestamp,
       open: currentSlotData.open,
       high: currentSlotData.high,
       low: currentSlotData.low,
       close: currentSlotData.close,
-      date: new Date(currentSlotData.timestamp),
     });
 
     data
