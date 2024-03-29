@@ -25,13 +25,18 @@ exports.fiveMinDataHandler = async (val) => {
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
     currentSlotData.timestamp = rawData.data.T;
-  } else if (initialmin != currentmin && currentmin % 5 == 0) {
+  } else if (initialmin != currentmin && currentmin % 5 === 0) {
     initialmin = currentmin;
     ///============= save in Database =============//
+    console.log("new upcoming min : ", hourMinFormat.minutes);
     console.log("currentSlotdata : ", currentSlotData);
+    const newUpcomingTimeStamp = Number(rawData.data.T);
 
     await FiveMinuteData.create({
-      _id: currentSlotData.timestamp,
+      //_id: currentSlotData.timestamp,
+      _id:
+        currentSlotData.timestamp -
+        Math.floor(currentSlotData.timestamp % 60000),
       open: currentSlotData.open,
       high: currentSlotData.high,
       low: currentSlotData.low,
@@ -42,7 +47,7 @@ exports.fiveMinDataHandler = async (val) => {
     currentSlotData.close = Number(rawData.data.p);
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
-    currentSlotData.timestamp = Number(rawData.data.T);
+    currentSlotData.timestamp = newUpcomingTimeStamp;
   } else {
     currentSlotData.close = Number(rawData.data.p);
     if (Number(rawData.data.p) < currentSlotData.low)

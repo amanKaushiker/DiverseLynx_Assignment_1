@@ -12,7 +12,7 @@ const admin = kafka.admin();
     await admin.createTopics({
       topics: [
         {
-          topic: "binance-kafka-topic-2",
+          topic: "binance-kafka-topic-3",
           numPartitions: 1,
           replicationFactor: 1,
         },

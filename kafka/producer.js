@@ -36,7 +36,7 @@ function dataProducer() {
     ws.on("message", (data) => {
       //console.log("data", data.toString());
       producer.produce(
-        "binance-kafka-topic-2", // Kafka topic
+        "binance-kafka-topic-3", // Kafka topic
         null,
         Buffer.from(data.toString()),
         null,

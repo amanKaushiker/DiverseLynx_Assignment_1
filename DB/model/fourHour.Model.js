@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const OneHourDataSchema = new mongoose.Schema({
+const FourHourDataSchema = new mongoose.Schema({
   _id: {
     type: Number,
   },
@@ -11,6 +11,6 @@ const OneHourDataSchema = new mongoose.Schema({
 });
 
 // Create a model for minute data
-const oneHourData = mongoose.model("OneHourDataSchema", OneHourDataSchema);
+const fourHourData = mongoose.model("FourHourDataSchema", FourHourDataSchema);
 
-module.exports = { oneHourData };
+module.exports = { fourHourData };

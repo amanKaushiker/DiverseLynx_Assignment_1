@@ -13,7 +13,8 @@ const currentSlotData = {
 exports.eachMinDataSaver = (val) => {
   const rawData = JSON.parse(val);
   const hourMinFormat = timeExtractor(rawData.data.T);
-  let currentSlot = `${hourMinFormat.hours}:${hourMinFormat.minutes}`;
+  //let currentSlot = `${hourMinFormat.hours}:${hourMinFormat.minutes}`;
+  let currentSlot = hourMinFormat.minutes;
 
   if (minSlot == undefined) {
     minSlot = currentSlot;
@@ -33,10 +34,12 @@ exports.eachMinDataSaver = (val) => {
     currentSlotData.close = Number(rawData.data.p);
   } else if (minSlot != currentSlot) {
     console.log("//========= New Minute arrived =========//");
-
+    minSlot = hourMinFormat.minutes;
     //=== old min data need to be saved in database ===//
     const data = new MinuteData({
-      _id: currentSlotData.timestamp,
+      _id:
+        currentSlotData.timestamp -
+        Math.floor(currentSlotData.timestamp % 60000),
       open: currentSlotData.open,
       high: currentSlotData.high,
       low: currentSlotData.low,
@@ -53,7 +56,7 @@ exports.eachMinDataSaver = (val) => {
       });
 
     //=== new Data need to be save temporaily
-    minSlot = `${hourMinFormat.hours}:${hourMinFormat.minutes}`;
+    //minSlot = `${hourMinFormat.hours}:${hourMinFormat.minutes}`;
 
     currentSlotData.open = currentSlotData.close; ///==> close is equals to new min open
     currentSlotData.close = Number(rawData.data.p);

@@ -3,6 +3,9 @@ const { connectToMongoDB } = require("./../DB/mongo_Connection");
 const { eachMinDataSaver } = require("./oneMin_DataHandler");
 const { fiveMinDataHandler } = require("./fiveMin_DataHandler");
 const { fifteenMinDataHandler } = require("./fifteenMin_DataHandler");
+const { } = require("./oneHour_DataHandler");
+const { } = require("./fourHour_DataHandler");
+const { } = require("./") 
 
 function consumer() {
   try {
@@ -14,13 +17,13 @@ function consumer() {
     const consumer = new Kafka.KafkaConsumer(consumerConfig);
     consumer.on("ready", async () => {
       console.log("Consumer is ready");
-      consumer.subscribe(["binance-kafka-topic-2"]);
+      consumer.subscribe(["binance-kafka-topic-3"]);
       consumer.consume();
     });
     consumer.on("data", (message) => {
       //console.log(`Received message: ${message.value.toString()}`); //${message.value.toString()}
-      //eachMinDataSaver(message.value.toString());
-      // fiveMinDataHandler(message.value.toString());
+      eachMinDataSaver(message.value.toString());
+      fiveMinDataHandler(message.value.toString());
       fifteenMinDataHandler(message.value.toString());
     });
     consumer.on("event.error", (error) => {

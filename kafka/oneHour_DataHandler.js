@@ -1,5 +1,5 @@
-const { FifteenMinuteData } = require("./../DB/model/fifteenMinute.Model");
-const { timeExtractor } = require("./../helper_functions/timeExtractor");
+const { oneHourData } = require("../DB/model/oneHour.Model");
+const { timeExtractor } = require("../helper_functions/timeExtractor");
 
 const currentSlotData = {
   open: null,
@@ -9,31 +9,31 @@ const currentSlotData = {
   timestamp: null,
 };
 
-let initialmin;
-let currentmin;
+let initialhour;
+let currenthour;
 
-exports.fifteenMinDataHandler = async (val) => {
+exports.oneHourDataHandler = async (val) => {
   const rawData = JSON.parse(val);
   const hourMinFormat = timeExtractor(rawData.data.T);
-  currentmin = hourMinFormat.minutes;
+  currenthour = hourMinFormat.hours;
 
-  if (initialmin == undefined) {
+  if (initialhour == undefined) {
     console.log(rawData.data.T);
-    initialmin = currentmin;
+    initialhour = currenthour;
     currentSlotData.open = Number(rawData.data.p);
     currentSlotData.close = Number(rawData.data.p);
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
     currentSlotData.timestamp = rawData.data.T;
-  } else if (initialmin != currentmin && currentmin % 15 == 0) {
-    initialmin = currentmin;
+  } else if (initialhour != currenthour) {
+    initialhour = currenthour;
     ///============= save in Database =============//
     console.log("currentSlotdata : ", currentSlotData);
 
-    await FifteenMinuteData.create({
+    await oneHourData.create({
       _id:
         currentSlotData.timestamp -
-        Math.floor(currentSlotData.timestamp % 60000),
+        Math.floor(currentSlotData.timestamp % 3600000),
       open: currentSlotData.open,
       high: currentSlotData.high,
       low: currentSlotData.low,
@@ -46,7 +46,6 @@ exports.fifteenMinDataHandler = async (val) => {
     currentSlotData.high = Number(rawData.data.p);
     currentSlotData.timestamp = Number(rawData.data.T);
   } else {
-    ``;
     currentSlotData.close = Number(rawData.data.p);
     if (Number(rawData.data.p) < currentSlotData.low)
       currentSlotData.low = Number(rawData.data.p);
