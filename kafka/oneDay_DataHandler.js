@@ -9,31 +9,29 @@ const currentSlotData = {
   timestamp: null,
 };
 
-let initialhour;
-let currenthour;
+let initialDayStamp;
+let currentDayStamp;
 
-exports.fourHourDataHandler = async (val) => {
+exports.oneDayDataHandler = async (val) => {
   const rawData = JSON.parse(val);
-  const hourMinFormat = timeExtractor(rawData.data.T);
-  currenthour = hourMinFormat.hours;
+  currentDayStamp =
+    Number(rawData.data.T) - Math.floor(Number(rawData.data.T) % 86400000); ///===> Round off 1-day timestamp
 
-  if (initialhour == undefined) {
+  if (initialDayStamp == undefined) {
     console.log(rawData.data.T);
-    initialhour = currenthour;
+    initialDayStamp = currentDayStamp;
     currentSlotData.open = Number(rawData.data.p);
     currentSlotData.close = Number(rawData.data.p);
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
-    currentSlotData.timestamp = rawData.data.T;
-  } else if (initialhour != currenthour && currenthour % 4 === 0) {
-    initialhour = currenthour;
+    currentSlotData.timestamp = currentDayStamp;
+  } else if (initialDayStamp != currentDayStamp) {
+    initialDayStamp = currentDayStamp;
     ///============= save in Database =============//
     console.log("currentSlotdata : ", currentSlotData);
 
     await oneDayDataModel.create({
-      _id:
-        currentSlotData.timestamp -
-        Math.floor(currentSlotData.timestamp % 3600000),
+      _id: currentSlotData.timestamp, ///===> Roundoff timeStamp
       open: currentSlotData.open,
       high: currentSlotData.high,
       low: currentSlotData.low,
@@ -44,7 +42,7 @@ exports.fourHourDataHandler = async (val) => {
     currentSlotData.close = Number(rawData.data.p);
     currentSlotData.low = Number(rawData.data.p);
     currentSlotData.high = Number(rawData.data.p);
-    currentSlotData.timestamp = Number(rawData.data.T);
+    currentSlotData.timestamp = currentDayStamp;
   } else {
     currentSlotData.close = Number(rawData.data.p);
     if (Number(rawData.data.p) < currentSlotData.low)

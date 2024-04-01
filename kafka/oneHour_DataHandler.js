@@ -18,7 +18,7 @@ exports.oneHourDataHandler = async (val) => {
   currenthour = hourMinFormat.hours;
 
   if (initialhour == undefined) {
-    console.log(rawData.data.T);
+    // console.log(rawData.data.T);
     initialhour = currenthour;
     currentSlotData.open = Number(rawData.data.p);
     currentSlotData.close = Number(rawData.data.p);

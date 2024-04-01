@@ -28,7 +28,7 @@ exports.fourHourDataHandler = async (val) => {
   } else if (initialhour != currenthour && currenthour % 4 === 0) {
     initialhour = currenthour;
     ///============= save in Database =============//
-    console.log("currentSlotdata : ", currentSlotData);
+    // console.log("currentSlotdata : ", currentSlotData);
 
     await fourHourData.create({
       _id:

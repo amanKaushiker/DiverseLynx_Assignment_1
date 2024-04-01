@@ -28,8 +28,8 @@ exports.fiveMinDataHandler = async (val) => {
   } else if (initialmin != currentmin && currentmin % 5 === 0) {
     initialmin = currentmin;
     ///============= save in Database =============//
-    console.log("new upcoming min : ", hourMinFormat.minutes);
-    console.log("currentSlotdata : ", currentSlotData);
+    // console.log("new upcoming min : ", hourMinFormat.minutes);
+    // console.log("currentSlotdata : ", currentSlotData);
     const newUpcomingTimeStamp = Number(rawData.data.T);
 
     await FiveMinuteData.create({

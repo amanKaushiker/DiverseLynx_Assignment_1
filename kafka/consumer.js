@@ -3,9 +3,9 @@ const { connectToMongoDB } = require("./../DB/mongo_Connection");
 const { eachMinDataSaver } = require("./oneMin_DataHandler");
 const { fiveMinDataHandler } = require("./fiveMin_DataHandler");
 const { fifteenMinDataHandler } = require("./fifteenMin_DataHandler");
-const { } = require("./oneHour_DataHandler");
-const { } = require("./fourHour_DataHandler");
-const { } = require("./") 
+const { oneHourDataHandler } = require("./oneHour_DataHandler");
+const { fourHourDataHandler } = require("./fourHour_DataHandler");
+const { oneDayDataHandler } = require("./oneDay_DataHandler");
 
 function consumer() {
   try {
@@ -25,6 +25,9 @@ function consumer() {
       eachMinDataSaver(message.value.toString());
       fiveMinDataHandler(message.value.toString());
       fifteenMinDataHandler(message.value.toString());
+      oneHourDataHandler(message.value.toString());
+      fourHourDataHandler(message.value.toString());
+      oneDayDataHandler(message.value.toString());
     });
     consumer.on("event.error", (error) => {
       console.error("Consumer error:", error);
@@ -38,7 +41,6 @@ function consumer() {
 
 connectToMongoDB()
   .then((d) => {
-    console.log(d);
     consumer();
   })
   .catch((e) => {

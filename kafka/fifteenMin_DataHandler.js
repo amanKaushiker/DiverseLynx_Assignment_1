@@ -28,7 +28,7 @@ exports.fifteenMinDataHandler = async (val) => {
   } else if (initialmin != currentmin && currentmin % 15 == 0) {
     initialmin = currentmin;
     ///============= save in Database =============//
-    console.log("currentSlotdata : ", currentSlotData);
+    // console.log("currentSlotdata : ", currentSlotData);
 
     await FifteenMinuteData.create({
       _id:
